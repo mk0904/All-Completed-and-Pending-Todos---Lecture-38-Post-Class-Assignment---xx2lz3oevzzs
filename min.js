@@ -7,9 +7,9 @@ const App = () => {
   const [input, setInput] = useState("");
 
   const addTodo = () => {
-    if (input.trim()) {
+    if (input.trim() !== "") {
       const newTodo = {
-        id: Date.now(),
+        id: new Date().getTime(),
         text: input.trim(),
         completed: false,
       };
@@ -26,9 +26,12 @@ const App = () => {
   };
 
   const filteredTodos = todos.filter((todo) => {
-    if (filter === "Completed") return todo.completed;
-    if (filter === "Pending") return !todo.completed;
-    return true;
+    if (filter === "Completed") {
+      return todo.completed;
+    } else if (filter === "Pending") {
+      return !todo.completed;
+    }
+    return true; // "All" filter
   });
 
   return (
@@ -50,7 +53,10 @@ const App = () => {
           <li
             key={todo.id}
             onClick={() => toggleTodo(todo.id)}
-            className={todo.completed ? "completed" : ""}
+            style={{
+              textDecoration: todo.completed ? "line-through" : "none",
+              cursor: "pointer",
+            }}
           >
             {todo.text}
           </li>
